@@ -12,7 +12,7 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage>
     with SingleTickerProviderStateMixin {
-  static const String _baseUrl = 'http://127.0.0.1:8000/api';
+  static const String _baseUrl = 'http://192.168.18.25:8000/api';
 
   final _emailCtrl = TextEditingController();
   final _codeCtrl = TextEditingController();

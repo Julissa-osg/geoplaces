@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1005140846089",
+    "project_id": "geoplaces-82c83",
+    "storage_bucket": "geoplaces-82c83.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005140846089:android:9d53bb0ae3b60594633ad8",
+        "android_client_info": {
+          "package_name": "com.example.flutter_laravel_api"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1005140846089-1v3vjv1smige6f9j69ttat7npgf70bl7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_laravel_api",
+            "certificate_hash": "e112ab60612b167ff2b3f9d23a4420796f113e06"
+          }
+        },
+        {
+          "client_id": "1005140846089-einun1fq5kdrvrsilafubtah48j5c941.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9spztU_IePEG3BU0FlboAB8zTo-7eLUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1005140846089-einun1fq5kdrvrsilafubtah48j5c941.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

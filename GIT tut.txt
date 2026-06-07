@@ -1,0 +1,503 @@
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL
+$ git init
+Initialized empty Git repository in C:/Users/ACER/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL/.git/
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git add README.md
+fatal: pathspec 'README.md' did not match any files
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git commit -m "first commit"
+On branch master
+
+Initial commit
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        CLIENT ID-- GOOGLE CLOUD  978895417.txt
+        flutter_laravel_api/
+        implementation_plan.md
+        laravel_api/
+        nuevo_plan.md
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git add .
+warning: in the working copy of 'flutter_laravel_api/.metadata', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/android/app/src/main/AndroidManifest.xml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/main.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/models/place_model.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/screens/brujola_page.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/screens/detalle_place_page.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/screens/forgot_password_page.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/screens/home_page.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/screens/login_page.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/screens/mapa_page.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/screens/places_page.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/services/api_service.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/services/notification_service.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/lib/services/place_service.dart', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/linux/flutter/generated_plugin_registrant.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/linux/flutter/generated_plugin_registrant.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/linux/flutter/generated_plugins.cmake', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/macos/Flutter/GeneratedPluginRegistrant.swift', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/pubspec.lock', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/windows/flutter/generated_plugin_registrant.cc', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/windows/flutter/generated_plugin_registrant.h', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'flutter_laravel_api/windows/flutter/generated_plugins.cmake', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'implementation_plan.md', LF will be replaced by CRLF the next time Git touches it
+warning: adding embedded git repository: laravel_api
+hint: You've added another git repository inside your current repository.
+hint: Clones of the outer repository will not contain the contents of
+hint: the embedded repository and will not know how to obtain it.
+hint: If you meant to add a submodule, use:
+hint:
+hint:   git submodule add <url> laravel_api
+hint:
+hint: If you added this path by mistake, you can remove it from the
+hint: index with:
+hint:
+hint:   git rm --cached laravel_api
+hint:
+hint: See "git help submodule" for more information.
+hint: Disable this message with "git config set advice.addEmbeddedRepo false"
+warning: in the working copy of 'nuevo_plan.md', LF will be replaced by CRLF the next time Git touches it
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   CLIENT ID-- GOOGLE CLOUD  978895417.txt
+        new file:   flutter_laravel_api/.gitignore
+        new file:   flutter_laravel_api/.metadata
+        new file:   flutter_laravel_api/README.md
+        new file:   flutter_laravel_api/analysis_options.yaml
+        new file:   flutter_laravel_api/android/.gitignore
+        new file:   flutter_laravel_api/android/app/build.gradle.kts
+        new file:   flutter_laravel_api/android/app/src/debug/AndroidManifest.xml
+        new file:   flutter_laravel_api/android/app/src/main/AndroidManifest.xml
+        new file:   flutter_laravel_api/android/app/src/main/kotlin/com/example/flutter_laravel_api/MainActivity.kt
+        new file:   flutter_laravel_api/android/app/src/main/res/drawable-v21/launch_background.xml
+        new file:   flutter_laravel_api/android/app/src/main/res/drawable/launch_background.xml
+        new file:   flutter_laravel_api/android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+        new file:   flutter_laravel_api/android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+        new file:   flutter_laravel_api/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+        new file:   flutter_laravel_api/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+        new file:   flutter_laravel_api/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+        new file:   flutter_laravel_api/android/app/src/main/res/values-night/styles.xml
+        new file:   flutter_laravel_api/android/app/src/main/res/values/styles.xml
+        new file:   flutter_laravel_api/android/app/src/profile/AndroidManifest.xml
+        new file:   flutter_laravel_api/android/build.gradle.kts
+        new file:   flutter_laravel_api/android/gradle.properties
+        new file:   flutter_laravel_api/android/gradle/wrapper/gradle-wrapper.properties
+        new file:   flutter_laravel_api/android/settings.gradle.kts
+        new file:   flutter_laravel_api/ios/.gitignore
+        new file:   flutter_laravel_api/ios/Flutter/AppFrameworkInfo.plist
+        new file:   flutter_laravel_api/ios/Flutter/Debug.xcconfig
+        new file:   flutter_laravel_api/ios/Flutter/Release.xcconfig
+        new file:   flutter_laravel_api/ios/Runner.xcodeproj/project.pbxproj
+        new file:   flutter_laravel_api/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+        new file:   flutter_laravel_api/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+        new file:   flutter_laravel_api/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+        new file:   flutter_laravel_api/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+        new file:   flutter_laravel_api/ios/Runner.xcworkspace/contents.xcworkspacedata
+        new file:   flutter_laravel_api/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+        new file:   flutter_laravel_api/ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+        new file:   flutter_laravel_api/ios/Runner/AppDelegate.swift
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png
+        new file:   flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md
+        new file:   flutter_laravel_api/ios/Runner/Base.lproj/LaunchScreen.storyboard
+        new file:   flutter_laravel_api/ios/Runner/Base.lproj/Main.storyboard
+        new file:   flutter_laravel_api/ios/Runner/Info.plist
+        new file:   flutter_laravel_api/ios/Runner/Runner-Bridging-Header.h
+        new file:   flutter_laravel_api/ios/Runner/SceneDelegate.swift
+        new file:   flutter_laravel_api/ios/RunnerTests/RunnerTests.swift
+        new file:   flutter_laravel_api/lib/main.dart
+        new file:   flutter_laravel_api/lib/models/place_model.dart
+        new file:   flutter_laravel_api/lib/screens/brujola_page.dart
+        new file:   flutter_laravel_api/lib/screens/detalle_place_page.dart
+        new file:   flutter_laravel_api/lib/screens/forgot_password_page.dart
+        new file:   flutter_laravel_api/lib/screens/home_page.dart
+        new file:   flutter_laravel_api/lib/screens/login_page.dart
+        new file:   flutter_laravel_api/lib/screens/mapa_page.dart
+        new file:   flutter_laravel_api/lib/screens/places_page.dart
+        new file:   flutter_laravel_api/lib/screens/register_page.dart
+        new file:   flutter_laravel_api/lib/services/api_service.dart
+        new file:   flutter_laravel_api/lib/services/notification_service.dart
+        new file:   flutter_laravel_api/lib/services/place_service.dart
+        new file:   flutter_laravel_api/linux/.gitignore
+        new file:   flutter_laravel_api/linux/CMakeLists.txt
+        new file:   flutter_laravel_api/linux/flutter/CMakeLists.txt
+        new file:   flutter_laravel_api/linux/flutter/generated_plugin_registrant.cc
+        new file:   flutter_laravel_api/linux/flutter/generated_plugin_registrant.h
+        new file:   flutter_laravel_api/linux/flutter/generated_plugins.cmake
+        new file:   flutter_laravel_api/linux/runner/CMakeLists.txt
+        new file:   flutter_laravel_api/linux/runner/main.cc
+        new file:   flutter_laravel_api/linux/runner/my_application.cc
+        new file:   flutter_laravel_api/linux/runner/my_application.h
+        new file:   flutter_laravel_api/macos/.gitignore
+        new file:   flutter_laravel_api/macos/Flutter/Flutter-Debug.xcconfig
+        new file:   flutter_laravel_api/macos/Flutter/Flutter-Release.xcconfig
+        new file:   flutter_laravel_api/macos/Flutter/GeneratedPluginRegistrant.swift
+        new file:   flutter_laravel_api/macos/Runner.xcodeproj/project.pbxproj
+        new file:   flutter_laravel_api/macos/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+        new file:   flutter_laravel_api/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+        new file:   flutter_laravel_api/macos/Runner.xcworkspace/contents.xcworkspacedata
+        new file:   flutter_laravel_api/macos/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+        new file:   flutter_laravel_api/macos/Runner/AppDelegate.swift
+        new file:   flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+        new file:   flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_1024.png
+        new file:   flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_128.png
+        new file:   flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_16.png
+        new file:   flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_256.png
+        new file:   flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_32.png
+        new file:   flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_512.png
+        new file:   flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_64.png
+        new file:   flutter_laravel_api/macos/Runner/Base.lproj/MainMenu.xib
+        new file:   flutter_laravel_api/macos/Runner/Configs/AppInfo.xcconfig
+        new file:   flutter_laravel_api/macos/Runner/Configs/Debug.xcconfig
+        new file:   flutter_laravel_api/macos/Runner/Configs/Release.xcconfig
+        new file:   flutter_laravel_api/macos/Runner/Configs/Warnings.xcconfig
+        new file:   flutter_laravel_api/macos/Runner/DebugProfile.entitlements
+        new file:   flutter_laravel_api/macos/Runner/Info.plist
+        new file:   flutter_laravel_api/macos/Runner/MainFlutterWindow.swift
+        new file:   flutter_laravel_api/macos/Runner/Release.entitlements
+        new file:   flutter_laravel_api/macos/RunnerTests/RunnerTests.swift
+        new file:   flutter_laravel_api/pubspec.lock
+        new file:   flutter_laravel_api/pubspec.yaml
+        new file:   flutter_laravel_api/test/widget_test.dart
+        new file:   flutter_laravel_api/web/favicon.png
+        new file:   flutter_laravel_api/web/icons/Icon-192.png
+        new file:   flutter_laravel_api/web/icons/Icon-512.png
+        new file:   flutter_laravel_api/web/icons/Icon-maskable-192.png
+        new file:   flutter_laravel_api/web/icons/Icon-maskable-512.png
+        new file:   flutter_laravel_api/web/index.html
+        new file:   flutter_laravel_api/web/manifest.json
+        new file:   flutter_laravel_api/windows/.gitignore
+        new file:   flutter_laravel_api/windows/CMakeLists.txt
+        new file:   flutter_laravel_api/windows/flutter/CMakeLists.txt
+        new file:   flutter_laravel_api/windows/flutter/generated_plugin_registrant.cc
+        new file:   flutter_laravel_api/windows/flutter/generated_plugin_registrant.h
+        new file:   flutter_laravel_api/windows/flutter/generated_plugins.cmake
+        new file:   flutter_laravel_api/windows/runner/CMakeLists.txt
+        new file:   flutter_laravel_api/windows/runner/Runner.rc
+        new file:   flutter_laravel_api/windows/runner/flutter_window.cpp
+        new file:   flutter_laravel_api/windows/runner/flutter_window.h
+        new file:   flutter_laravel_api/windows/runner/main.cpp
+        new file:   flutter_laravel_api/windows/runner/resource.h
+        new file:   flutter_laravel_api/windows/runner/resources/app_icon.ico
+        new file:   flutter_laravel_api/windows/runner/runner.exe.manifest
+        new file:   flutter_laravel_api/windows/runner/utils.cpp
+        new file:   flutter_laravel_api/windows/runner/utils.h
+        new file:   flutter_laravel_api/windows/runner/win32_window.cpp
+        new file:   flutter_laravel_api/windows/runner/win32_window.h
+        new file:   implementation_plan.md
+        new file:   laravel_api
+        new file:   nuevo_plan.md
+
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git commit -m "first commit"
+[master (root-commit) a848306] first commit
+ 146 files changed, 10762 insertions(+)
+ create mode 100644 CLIENT ID-- GOOGLE CLOUD  978895417.txt
+ create mode 100644 flutter_laravel_api/.gitignore
+ create mode 100644 flutter_laravel_api/.metadata
+ create mode 100644 flutter_laravel_api/README.md
+ create mode 100644 flutter_laravel_api/analysis_options.yaml
+ create mode 100644 flutter_laravel_api/android/.gitignore
+ create mode 100644 flutter_laravel_api/android/app/build.gradle.kts
+ create mode 100644 flutter_laravel_api/android/app/src/debug/AndroidManifest.xml
+ create mode 100644 flutter_laravel_api/android/app/src/main/AndroidManifest.xml
+ create mode 100644 flutter_laravel_api/android/app/src/main/kotlin/com/example/flutter_laravel_api/MainActivity.kt
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/drawable-v21/launch_background.xml
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/drawable/launch_background.xml
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/values-night/styles.xml
+ create mode 100644 flutter_laravel_api/android/app/src/main/res/values/styles.xml
+ create mode 100644 flutter_laravel_api/android/app/src/profile/AndroidManifest.xml
+ create mode 100644 flutter_laravel_api/android/build.gradle.kts
+ create mode 100644 flutter_laravel_api/android/gradle.properties
+ create mode 100644 flutter_laravel_api/android/gradle/wrapper/gradle-wrapper.properties
+ create mode 100644 flutter_laravel_api/android/settings.gradle.kts
+ create mode 100644 flutter_laravel_api/ios/.gitignore
+ create mode 100644 flutter_laravel_api/ios/Flutter/AppFrameworkInfo.plist
+ create mode 100644 flutter_laravel_api/ios/Flutter/Debug.xcconfig
+ create mode 100644 flutter_laravel_api/ios/Flutter/Release.xcconfig
+ create mode 100644 flutter_laravel_api/ios/Runner.xcodeproj/project.pbxproj
+ create mode 100644 flutter_laravel_api/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+ create mode 100644 flutter_laravel_api/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+ create mode 100644 flutter_laravel_api/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+ create mode 100644 flutter_laravel_api/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+ create mode 100644 flutter_laravel_api/ios/Runner.xcworkspace/contents.xcworkspacedata
+ create mode 100644 flutter_laravel_api/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+ create mode 100644 flutter_laravel_api/ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+ create mode 100644 flutter_laravel_api/ios/Runner/AppDelegate.swift
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png
+ create mode 100644 flutter_laravel_api/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md
+ create mode 100644 flutter_laravel_api/ios/Runner/Base.lproj/LaunchScreen.storyboard
+ create mode 100644 flutter_laravel_api/ios/Runner/Base.lproj/Main.storyboard
+ create mode 100644 flutter_laravel_api/ios/Runner/Info.plist
+ create mode 100644 flutter_laravel_api/ios/Runner/Runner-Bridging-Header.h
+ create mode 100644 flutter_laravel_api/ios/Runner/SceneDelegate.swift
+ create mode 100644 flutter_laravel_api/ios/RunnerTests/RunnerTests.swift
+ create mode 100644 flutter_laravel_api/lib/main.dart
+ create mode 100644 flutter_laravel_api/lib/models/place_model.dart
+ create mode 100644 flutter_laravel_api/lib/screens/brujola_page.dart
+ create mode 100644 flutter_laravel_api/lib/screens/detalle_place_page.dart
+ create mode 100644 flutter_laravel_api/lib/screens/forgot_password_page.dart
+ create mode 100644 flutter_laravel_api/lib/screens/home_page.dart
+ create mode 100644 flutter_laravel_api/lib/screens/login_page.dart
+ create mode 100644 flutter_laravel_api/lib/screens/mapa_page.dart
+ create mode 100644 flutter_laravel_api/lib/screens/places_page.dart
+ create mode 100644 flutter_laravel_api/lib/screens/register_page.dart
+ create mode 100644 flutter_laravel_api/lib/services/api_service.dart
+ create mode 100644 flutter_laravel_api/lib/services/notification_service.dart
+ create mode 100644 flutter_laravel_api/lib/services/place_service.dart
+ create mode 100644 flutter_laravel_api/linux/.gitignore
+ create mode 100644 flutter_laravel_api/linux/CMakeLists.txt
+ create mode 100644 flutter_laravel_api/linux/flutter/CMakeLists.txt
+ create mode 100644 flutter_laravel_api/linux/flutter/generated_plugin_registrant.cc
+ create mode 100644 flutter_laravel_api/linux/flutter/generated_plugin_registrant.h
+ create mode 100644 flutter_laravel_api/linux/flutter/generated_plugins.cmake
+ create mode 100644 flutter_laravel_api/linux/runner/CMakeLists.txt
+ create mode 100644 flutter_laravel_api/linux/runner/main.cc
+ create mode 100644 flutter_laravel_api/linux/runner/my_application.cc
+ create mode 100644 flutter_laravel_api/linux/runner/my_application.h
+ create mode 100644 flutter_laravel_api/macos/.gitignore
+ create mode 100644 flutter_laravel_api/macos/Flutter/Flutter-Debug.xcconfig
+ create mode 100644 flutter_laravel_api/macos/Flutter/Flutter-Release.xcconfig
+ create mode 100644 flutter_laravel_api/macos/Flutter/GeneratedPluginRegistrant.swift
+ create mode 100644 flutter_laravel_api/macos/Runner.xcodeproj/project.pbxproj
+ create mode 100644 flutter_laravel_api/macos/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+ create mode 100644 flutter_laravel_api/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+ create mode 100644 flutter_laravel_api/macos/Runner.xcworkspace/contents.xcworkspacedata
+ create mode 100644 flutter_laravel_api/macos/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+ create mode 100644 flutter_laravel_api/macos/Runner/AppDelegate.swift
+ create mode 100644 flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+ create mode 100644 flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_1024.png
+ create mode 100644 flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_128.png
+ create mode 100644 flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_16.png
+ create mode 100644 flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_256.png
+ create mode 100644 flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_32.png
+ create mode 100644 flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_512.png
+ create mode 100644 flutter_laravel_api/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_64.png
+ create mode 100644 flutter_laravel_api/macos/Runner/Base.lproj/MainMenu.xib
+ create mode 100644 flutter_laravel_api/macos/Runner/Configs/AppInfo.xcconfig
+ create mode 100644 flutter_laravel_api/macos/Runner/Configs/Debug.xcconfig
+ create mode 100644 flutter_laravel_api/macos/Runner/Configs/Release.xcconfig
+ create mode 100644 flutter_laravel_api/macos/Runner/Configs/Warnings.xcconfig
+ create mode 100644 flutter_laravel_api/macos/Runner/DebugProfile.entitlements
+ create mode 100644 flutter_laravel_api/macos/Runner/Info.plist
+ create mode 100644 flutter_laravel_api/macos/Runner/MainFlutterWindow.swift
+ create mode 100644 flutter_laravel_api/macos/Runner/Release.entitlements
+ create mode 100644 flutter_laravel_api/macos/RunnerTests/RunnerTests.swift
+ create mode 100644 flutter_laravel_api/pubspec.lock
+ create mode 100644 flutter_laravel_api/pubspec.yaml
+ create mode 100644 flutter_laravel_api/test/widget_test.dart
+ create mode 100644 flutter_laravel_api/web/favicon.png
+ create mode 100644 flutter_laravel_api/web/icons/Icon-192.png
+ create mode 100644 flutter_laravel_api/web/icons/Icon-512.png
+ create mode 100644 flutter_laravel_api/web/icons/Icon-maskable-192.png
+ create mode 100644 flutter_laravel_api/web/icons/Icon-maskable-512.png
+ create mode 100644 flutter_laravel_api/web/index.html
+ create mode 100644 flutter_laravel_api/web/manifest.json
+ create mode 100644 flutter_laravel_api/windows/.gitignore
+ create mode 100644 flutter_laravel_api/windows/CMakeLists.txt
+ create mode 100644 flutter_laravel_api/windows/flutter/CMakeLists.txt
+ create mode 100644 flutter_laravel_api/windows/flutter/generated_plugin_registrant.cc
+ create mode 100644 flutter_laravel_api/windows/flutter/generated_plugin_registrant.h
+ create mode 100644 flutter_laravel_api/windows/flutter/generated_plugins.cmake
+ create mode 100644 flutter_laravel_api/windows/runner/CMakeLists.txt
+ create mode 100644 flutter_laravel_api/windows/runner/Runner.rc
+ create mode 100644 flutter_laravel_api/windows/runner/flutter_window.cpp
+ create mode 100644 flutter_laravel_api/windows/runner/flutter_window.h
+ create mode 100644 flutter_laravel_api/windows/runner/main.cpp
+ create mode 100644 flutter_laravel_api/windows/runner/resource.h
+ create mode 100644 flutter_laravel_api/windows/runner/resources/app_icon.ico
+ create mode 100644 flutter_laravel_api/windows/runner/runner.exe.manifest
+ create mode 100644 flutter_laravel_api/windows/runner/utils.cpp
+ create mode 100644 flutter_laravel_api/windows/runner/utils.h
+ create mode 100644 flutter_laravel_api/windows/runner/win32_window.cpp
+ create mode 100644 flutter_laravel_api/windows/runner/win32_window.h
+ create mode 100644 implementation_plan.md
+ create mode 160000 laravel_api
+ create mode 100644 nuevo_plan.md
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git remote add origin https://github.com/Julissa-osg/geoplaces.git
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git push -u origin main
+error: src refspec main does not match any
+error: failed to push some refs to 'https://github.com/Julissa-osg/geoplaces.git'
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ ^C
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git push -u origin master
+Enumerating objects: 199, done.
+Counting objects: 100% (199/199), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (168/168), done.
+Writing objects: 100% (199/199), 308.84 KiB | 9.65 MiB/s, done.
+Total 199 (delta 25), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (25/25), done.
+remote: error: GH013: Repository rule violations found for refs/heads/master.
+remote:
+remote: - GITHUB PUSH PROTECTION
+remote:   —————————————————————————————————————————
+remote:     Resolve the following violations before pushing again
+remote:
+remote:     - Push cannot contain secrets
+remote:
+remote:
+remote:      (?) Learn how to resolve a blocked push
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
+remote:
+remote:
+remote:       —— Google OAuth Client ID ————————————————————————————
+remote:        locations:
+remote:          - commit: a848306d6f045350a11814f3a36521873db0ba9d
+remote:            path: CLIENT ID-- GOOGLE CLOUD  978895417.txt:1
+remote:
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/Julissa-osg/geoplaces/security/secret-scanning/unblock-secret/3EeOxZCsPqH2UgDhkkdIWehP1Lz
+remote:
+remote:
+remote:       —— Google OAuth Client Secret ————————————————————————
+remote:        locations:
+remote:          - commit: a848306d6f045350a11814f3a36521873db0ba9d
+remote:            path: CLIENT ID-- GOOGLE CLOUD  978895417.txt:4
+remote:
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/Julissa-osg/geoplaces/security/secret-scanning/unblock-secret/3EeOxccPDU9sLwqbeb03NPRutHz
+remote:
+remote:
+remote:
+To https://github.com/Julissa-osg/geoplaces.git
+ ! [remote rejected] master -> master (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/Julissa-osg/geoplaces.git'
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ ^C
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git add .
+warning: in the working copy of '.gitignore', LF will be replaced by CRLF the next time Git touches it
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   .gitignore
+
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git commit -m "first commit"
+[master baccbae] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 .gitignore
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$ git push -u origin master
+Enumerating objects: 202, done.
+Counting objects: 100% (202/202), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (170/170), done.
+Writing objects: 100% (202/202), 309.10 KiB | 9.97 MiB/s, done.
+Total 202 (delta 26), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (26/26), done.
+remote: error: GH013: Repository rule violations found for refs/heads/master.
+remote:
+remote: - GITHUB PUSH PROTECTION
+remote:   —————————————————————————————————————————
+remote:     Resolve the following violations before pushing again
+remote:
+remote:     - Push cannot contain secrets
+remote:
+remote:
+remote:      (?) Learn how to resolve a blocked push
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push
+remote:
+remote:
+remote:       —— Google OAuth Client ID ————————————————————————————
+remote:        locations:
+remote:          - commit: a848306d6f045350a11814f3a36521873db0ba9d
+remote:            path: CLIENT ID-- GOOGLE CLOUD  978895417.txt:1
+remote:
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/Julissa-osg/geoplaces/security/secret-scanning/unblock-secret/3EeOxZCsPqH2UgDhkkdIWehP1Lz
+remote:
+remote:
+remote:       —— Google OAuth Client Secret ————————————————————————
+remote:        locations:
+remote:          - commit: a848306d6f045350a11814f3a36521873db0ba9d
+remote:            path: CLIENT ID-- GOOGLE CLOUD  978895417.txt:4
+remote:
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.
+remote:        https://github.com/Julissa-osg/geoplaces/security/secret-scanning/unblock-secret/3EeOxccPDU9sLwqbeb03NPRutHz
+remote:
+remote:
+remote:
+To https://github.com/Julissa-osg/geoplaces.git
+ ! [remote rejected] master -> master (push declined due to repository rule violations)
+error: failed to push some refs to 'https://github.com/Julissa-osg/geoplaces.git'
+
+ACER@DESKTOP-IMGTM04 MINGW64 ~/Documents/UNIVERSIDAD/IV SEMESTRE/DBPI/C2 - FLUTTER CON LARAVEL (master)
+$

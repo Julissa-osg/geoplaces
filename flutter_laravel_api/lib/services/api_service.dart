@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://127.0.0.1:8000/api';
+  static const String baseUrl = 'https://geoplaces-production.up.railway.app/api';
 
   static final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: '978895417776-592bimm75813obnue31skg599begk0i8.apps.googleusercontent.com',
+    serverClientId: kIsWeb ? null : '1005140846089-einun1fq5kdrvrsilafubtah48j5c941.apps.googleusercontent.com',
     scopes: ['email', 'profile'],
   );
 
@@ -15,6 +16,7 @@ class ApiService {
   static Map<String, String> get _jsonHeaders => {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
       };
 
   static Future<Map<String, String>> _authHeaders() async {
@@ -24,6 +26,7 @@ class ApiService {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $token',
+      'ngrok-skip-browser-warning': 'true',
     };
   }
 
@@ -46,10 +49,10 @@ class ApiService {
         final data = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['token']);
+        await prefs.setString('user_name', data['user']?['name'] ?? ''); // ✅ guarda nombre
         return {'ok': true};
       }
 
-      // Errores específicos del servidor
       try {
         final data = jsonDecode(response.body);
         return {
@@ -70,6 +73,7 @@ class ApiService {
   static Future<Map<String, dynamic>> register({
     required String name,
     required String apellido,
+    required String nivelEducativo,
     required String email,
     required String password,
     required String passwordConfirmation,
@@ -81,6 +85,7 @@ class ApiService {
         body: jsonEncode({
           'name':                  name,
           'apellido':              apellido,
+          'nivel_educativo':       nivelEducativo,
           'email':                 email,
           'password':              password,
           'password_confirmation': passwordConfirmation,
@@ -94,6 +99,7 @@ class ApiService {
         final data = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['token']);
+        await prefs.setString('user_name', data['user']?['name'] ?? ''); // ✅ guarda nombre
         return {'ok': true};
       }
 
@@ -130,6 +136,7 @@ class ApiService {
         final data = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['token']);
+        await prefs.setString('user_name', data['user']?['name'] ?? ''); // ✅ guarda nombre
         return true;
       }
       return false;
@@ -149,12 +156,25 @@ class ApiService {
       );
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final data = jsonDecode(response.body);
+        // ✅ actualiza el nombre guardado localmente
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('user_name', data['name'] ?? '');
+        return data;
       }
+
+      // Fallback: usar nombre guardado localmente
+      final prefs = await SharedPreferences.getInstance();
+      final name = prefs.getString('user_name') ?? '';
+      if (name.isNotEmpty) return {'name': name};
+
       return null;
     } catch (e) {
       print('GET USER ERROR: $e');
-      return null;
+      // Fallback offline
+      final prefs = await SharedPreferences.getInstance();
+      final name = prefs.getString('user_name') ?? '';
+      return name.isNotEmpty ? {'name': name} : null;
     }
   }
 
@@ -172,6 +192,7 @@ class ApiService {
     } finally {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('token');
+      await prefs.remove('user_name'); // ✅ limpia nombre al cerrar sesión
     }
   }
 }

@@ -23,6 +23,10 @@ class _BrujolaPageState extends State<BrujolaPage>
   double _gyroY = 0.0;
   double _gyroZ = 0.0;
   Position? _posicion;
+  
+  bool _isShaking = false;
+  bool _isUpsideDown = false;
+  bool _isFaceDown = false;
 
   StreamSubscription? _magnetoSub;
   StreamSubscription? _accelSub;
@@ -75,10 +79,16 @@ class _BrujolaPageState extends State<BrujolaPage>
     try {
       _accelSub = accelerometerEventStream().listen((event) {
         if (mounted) {
+          final double magnitude = math.sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
           setState(() {
             _accelX = event.x;
             _accelY = event.y;
             _accelZ = event.z;
+            
+            // Detección de movimiento
+            _isShaking = magnitude > 25.0;
+            _isUpsideDown = event.y < -7.0;
+            _isFaceDown = event.z < -8.0;
           });
         }
       });
@@ -333,6 +343,14 @@ class _BrujolaPageState extends State<BrujolaPage>
               const SizedBox(height: 16),
             ],
 
+            // ── Estado de Movimiento (Feedback Interactivo) ──
+            _MotionFeedbackPanel(
+              isShaking: _isShaking,
+              isUpsideDown: _isUpsideDown,
+              isFaceDown: _isFaceDown,
+            ),
+            const SizedBox(height: 16),
+
             // ── Acelerómetro ──────────────────────────────
             _SensorCard(
               titulo: 'Acelerómetro',
@@ -476,6 +494,81 @@ class _SensorCard extends StatelessWidget {
                 ),
               );
             }).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MotionFeedbackPanel extends StatelessWidget {
+  final bool isShaking;
+  final bool isUpsideDown;
+  final bool isFaceDown;
+
+  const _MotionFeedbackPanel({
+    required this.isShaking,
+    required this.isUpsideDown,
+    required this.isFaceDown,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Color panelColor = const Color(0xFF1E1E2E);
+    Color borderColor = const Color(0xFF7C3AED).withOpacity(0.2);
+    String message = 'Movimiento estable';
+    IconData icon = Icons.check_circle_outline;
+    Color contentColor = Colors.white70;
+
+    if (isShaking) {
+      panelColor = const Color(0xFFDC2626).withOpacity(0.2);
+      borderColor = const Color(0xFFDC2626);
+      message = '¡Cuidado! Estás agitando el dispositivo';
+      icon = Icons.warning_amber_rounded;
+      contentColor = const Color(0xFFEF4444);
+    } else if (isFaceDown) {
+      panelColor = const Color(0xFFF59E0B).withOpacity(0.2);
+      borderColor = const Color(0xFFF59E0B);
+      message = 'Dispositivo boca abajo';
+      icon = Icons.screen_rotation_outlined;
+      contentColor = const Color(0xFFFBBF24);
+    } else if (isUpsideDown) {
+      panelColor = const Color(0xFF3B82F6).withOpacity(0.2);
+      borderColor = const Color(0xFF3B82F6);
+      message = 'Dispositivo de cabeza';
+      icon = Icons.swap_vert_rounded;
+      contentColor = const Color(0xFF60A5FA);
+    }
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: panelColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: borderColor, width: isShaking ? 2 : 1),
+        boxShadow: isShaking
+            ? [BoxShadow(color: const Color(0xFFDC2626).withOpacity(0.4), blurRadius: 15, spreadRadius: 2)]
+            : [],
+      ),
+      child: Column(
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            transitionBuilder: (child, animation) => ScaleTransition(scale: animation, child: child),
+            child: Icon(icon, key: ValueKey(icon), color: contentColor, size: 36),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: contentColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
         ],
       ),

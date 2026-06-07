@@ -11,15 +11,16 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage>
     with SingleTickerProviderStateMixin {
-  final _formKey           = GlobalKey<FormState>();
-  final nameController     = TextEditingController();
-  final apellidoController = TextEditingController();
-  final emailController    = TextEditingController();
-  final passController     = TextEditingController();
-  final confirmController  = TextEditingController();
-  bool loading             = false;
-  bool _verPass            = false;
-  bool _verConfirm         = false;
+  final _formKey                 = GlobalKey<FormState>();
+  final nameController           = TextEditingController();
+  final apellidoController       = TextEditingController();
+  final nivelEducativoController = TextEditingController();
+  final emailController          = TextEditingController();
+  final passController           = TextEditingController();
+  final confirmController        = TextEditingController();
+  bool loading                   = false;
+  bool _verPass                  = false;
+  bool _verConfirm               = false;
 
   late final AnimationController _animCtrl;
   late final Animation<double>   _fadeAnim;
@@ -43,6 +44,7 @@ class _RegisterPageState extends State<RegisterPage>
     _animCtrl.dispose();
     nameController.dispose();
     apellidoController.dispose();
+    nivelEducativoController.dispose();
     emailController.dispose();
     passController.dispose();
     confirmController.dispose();
@@ -56,6 +58,7 @@ class _RegisterPageState extends State<RegisterPage>
     final result = await ApiService.register(
       name:                 nameController.text.trim(),
       apellido:             apellidoController.text.trim(),
+      nivelEducativo:       nivelEducativoController.text.trim(),
       email:                emailController.text.trim(),
       password:             passController.text,
       passwordConfirmation: confirmController.text,
@@ -184,6 +187,29 @@ class _RegisterPageState extends State<RegisterPage>
                       ),
                       const SizedBox(height: 16),
 
+                      // Nivel educativo
+                      _buildLabel('Nivel educativo'),
+                      const SizedBox(height: 8),
+                      DropdownButtonFormField<String>(
+                        dropdownColor: const Color(0xFF1E1E2E),
+                        style: const TextStyle(color: Colors.white, fontSize: 15),
+                        decoration: _inputDecoration(
+                          hint: 'Selecciona tu nivel',
+                          icon: Icons.school_outlined,
+                        ),
+                        items: const [
+                          DropdownMenuItem(value: 'Primaria',   child: Text('Primaria')),
+                          DropdownMenuItem(value: 'Secundaria', child: Text('Secundaria')),
+                          DropdownMenuItem(value: 'Técnico',    child: Text('Técnico')),
+                          DropdownMenuItem(value: 'Superior',   child: Text('Superior')),
+                          DropdownMenuItem(value: 'Posgrado',   child: Text('Posgrado')),
+                        ],
+                        onChanged: (v) => nivelEducativoController.text = v ?? '',
+                        validator: (v) =>
+                            (v == null || v.isEmpty) ? 'Selecciona tu nivel educativo' : null,
+                      ),
+                      const SizedBox(height: 16),
+
                       // Correo
                       _buildLabel('Correo electrónico'),
                       const SizedBox(height: 8),
@@ -203,7 +229,6 @@ class _RegisterPageState extends State<RegisterPage>
                       // Contraseña
                       _buildLabel('Contraseña'),
                       const SizedBox(height: 4),
-                      // Indicador de requisitos
                       Text(
                         'Mínimo 8 caracteres, letras, números y un símbolo (!@#\$...)',
                         style: TextStyle(

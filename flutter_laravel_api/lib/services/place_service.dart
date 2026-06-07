@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/place_model.dart';
 
 class PlaceService {
-  static const String baseUrl = 'http://127.0.0.1:8000/api';
+  static const String baseUrl = 'https://geoplaces-production.up.railway.app/api';
 
   static Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -137,4 +137,4 @@ class PlaceService {
       return false;
     }
   }
-}
+}  //ESTE ES place_service.dart

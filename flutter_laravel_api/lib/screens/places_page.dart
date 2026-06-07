@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import '../models/place_model.dart';
 import '../services/notification_service.dart';
 import '../services/place_service.dart';
+import '../services/firestore_service.dart';
 import 'detalle_place_page.dart';
 
 class PlacesPage extends StatefulWidget {
@@ -55,6 +56,8 @@ class _PlacesPageState extends State<PlacesPage> {
   Future<void> _eliminarPlace(Place place) async {
     final ok = await PlaceService.deletePlace(place.id);
     if (ok) {
+      // Eliminar también de Firestore
+      await FirestoreService.deletePlace(place.id);
       setState(() => places.removeWhere((p) => p.id == place.id));
       await NotificationService.mostrarLugarEliminado(place.name);
       if (mounted) {
@@ -332,6 +335,16 @@ class _PlacesPageState extends State<PlacesPage> {
                         imageFile: imagenSeleccionada,
                       );
                       if (nuevo != null && ctx.mounted) {
+                        // Guardar también en Firestore
+                        await FirestoreService.savePlace(
+                          id: nuevo.id,
+                          name: nuevo.name,
+                          description: nuevo.description,
+                          latitude: nuevo.latitude,
+                          longitude: nuevo.longitude,
+                          imageUrl: nuevo.imageUrl,
+                          userId: nuevo.userId,
+                        );
                         Navigator.pop(ctx);
                         await NotificationService.mostrarLugarGuardado(
                             nuevo.name);

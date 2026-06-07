@@ -5,6 +5,7 @@ import 'brujola_page.dart';
 import 'login_page.dart';
 import 'places_page.dart';
 import 'mapa_page.dart';
+import 'contact_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -210,7 +211,7 @@ class _InicioScreenState extends State<_InicioScreen> {
               ),
               const SizedBox(height: 14),
               Text(
-                'Hola, $name 👋',
+                'Hola, $name ',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 22,
@@ -285,6 +286,25 @@ class _InicioScreenState extends State<_InicioScreen> {
                   subtitle: 'Marcar posición',
                   color: const Color(0xFFF59E0B),
                   onTap: () => widget.onNavigate(1),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _QuickCard(
+                  icon: Icons.contact_support_outlined,
+                  title: 'Contáctanos',
+                  subtitle: 'WhatsApp, Correo y más',
+                  color: const Color(0xFF8B5CF6),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const ContactPage()),
+                    );
+                  },
                 ),
               ),
             ],
