@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../services/api_service.dart';
 import 'forgot_password_page.dart';
 import 'home_page.dart';
@@ -13,15 +14,15 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-  final emailController = TextEditingController();
+  final emailController    = TextEditingController();
   final passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  bool loading = false;
-  bool _verPass = false;
+  final _formKey           = GlobalKey<FormState>();
+  bool loading             = false;
+  bool _verPass            = false;
 
   late final AnimationController _animCtrl;
-  late final Animation<double> _fadeAnim;
-  late final Animation<Offset> _slideAnim;
+  late final Animation<double>   _fadeAnim;
+  late final Animation<Offset>   _slideAnim;
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class _LoginPageState extends State<LoginPage>
       vsync: this,
       duration: const Duration(milliseconds: 900),
     );
-    _fadeAnim = CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut);
+    _fadeAnim  = CurvedAnimation(parent: _animCtrl, curve: Curves.easeOut);
     _slideAnim = Tween<Offset>(
       begin: const Offset(0, 0.12),
       end: Offset.zero,
@@ -46,7 +47,7 @@ class _LoginPageState extends State<LoginPage>
     super.dispose();
   }
 
-  // ── Login normal con mensajes específicos ────────────
+  // ── Login normal con Firebase Auth ───────────────────
   Future<void> _login() async {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     setState(() => loading = true);
@@ -59,9 +60,20 @@ class _LoginPageState extends State<LoginPage>
     if (mounted) setState(() => loading = false);
 
     if (result['ok'] == true && mounted) {
+      // Sincronizar sesión con Firebase Auth
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text,
+        );
+        print('FIREBASE LOGIN: sesión iniciada correctamente');
+      } catch (e) {
+        print('FIREBASE LOGIN ERROR: $e');
+        // No bloqueamos el flujo aunque Firebase falle
+      }
       _irAHome();
     } else if (mounted) {
-      final tipo = result['error_type'] ?? 'unknown';
+      final tipo    = result['error_type'] ?? 'unknown';
       final mensaje = result['message']?.toString() ?? 'Error al ingresar';
 
       if (tipo == 'email') {
@@ -92,7 +104,7 @@ class _LoginPageState extends State<LoginPage>
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const HomePage(),
+        pageBuilder:      (_, __, ___) => const HomePage(),
         transitionsBuilder: (_, anim, __, child) =>
             FadeTransition(opacity: anim, child: child),
         transitionDuration: const Duration(milliseconds: 400),
@@ -111,7 +123,7 @@ class _LoginPageState extends State<LoginPage>
           ],
         ),
         backgroundColor: const Color(0xFFDC2626),
-        behavior: SnackBarBehavior.floating,
+        behavior:        SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(16),
       ),
@@ -152,9 +164,7 @@ class _LoginPageState extends State<LoginPage>
                             borderRadius: BorderRadius.circular(24),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(
-                                  0xFF7C3AED,
-                                ).withOpacity(0.45),
+                                color: const Color(0xFF7C3AED).withOpacity(0.45),
                                 blurRadius: 28,
                                 spreadRadius: 2,
                                 offset: const Offset(0, 8),
@@ -197,17 +207,13 @@ class _LoginPageState extends State<LoginPage>
                       TextFormField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
+                        style: const TextStyle(color: Colors.white, fontSize: 15),
                         decoration: _inputDecoration(
                           hint: 'ejemplo@correo.com',
                           icon: Icons.email_outlined,
                         ),
                         validator: (v) {
-                          if (v == null || v.isEmpty)
-                            return 'Ingresa tu correo';
+                          if (v == null || v.isEmpty) return 'Ingresa tu correo';
                           if (!v.contains('@')) return 'Correo no válido';
                           return null;
                         },
@@ -220,31 +226,25 @@ class _LoginPageState extends State<LoginPage>
                       TextFormField(
                         controller: passwordController,
                         obscureText: !_verPass,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                        decoration:
-                            _inputDecoration(
-                              hint: '••••••••',
-                              icon: Icons.lock_outline_rounded,
-                            ).copyWith(
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _verPass
-                                      ? Icons.visibility_off_outlined
-                                      : Icons.visibility_outlined,
-                                  color: Colors.white38,
-                                  size: 20,
-                                ),
-                                onPressed: () =>
-                                    setState(() => _verPass = !_verPass),
-                              ),
+                        style: const TextStyle(color: Colors.white, fontSize: 15),
+                        decoration: _inputDecoration(
+                          hint: '••••••••',
+                          icon: Icons.lock_outline_rounded,
+                        ).copyWith(
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _verPass
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.visibility_outlined,
+                              color: Colors.white38,
+                              size: 20,
                             ),
+                            onPressed: () => setState(() => _verPass = !_verPass),
+                          ),
+                        ),
                         onFieldSubmitted: (_) => _login(),
                         validator: (v) {
-                          if (v == null || v.isEmpty)
-                            return 'Ingresa tu contraseña';
+                          if (v == null || v.isEmpty) return 'Ingresa tu contraseña';
                           if (v.length < 8) return 'Mínimo 8 caracteres';
                           return null;
                         },
@@ -283,14 +283,11 @@ class _LoginPageState extends State<LoginPage>
                           onPressed: loading ? null : _login,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF7C3AED),
-                            disabledBackgroundColor: const Color(
-                              0xFF7C3AED,
-                            ).withOpacity(0.5),
+                            disabledBackgroundColor:
+                                const Color(0xFF7C3AED).withOpacity(0.5),
                             foregroundColor: Colors.white,
                             elevation: 8,
-                            shadowColor: const Color(
-                              0xFF7C3AED,
-                            ).withOpacity(0.5),
+                            shadowColor: const Color(0xFF7C3AED).withOpacity(0.5),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
@@ -327,9 +324,7 @@ class _LoginPageState extends State<LoginPage>
                       Row(
                         children: [
                           Expanded(
-                            child: Divider(
-                              color: Colors.white.withOpacity(0.1),
-                            ),
+                            child: Divider(color: Colors.white.withOpacity(0.1)),
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -342,9 +337,7 @@ class _LoginPageState extends State<LoginPage>
                             ),
                           ),
                           Expanded(
-                            child: Divider(
-                              color: Colors.white.withOpacity(0.1),
-                            ),
+                            child: Divider(color: Colors.white.withOpacity(0.1)),
                           ),
                         ],
                       ),
@@ -358,9 +351,7 @@ class _LoginPageState extends State<LoginPage>
                           onPressed: loading ? null : _loginGoogle,
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.white,
-                            side: BorderSide(
-                              color: Colors.white.withOpacity(0.2),
-                            ),
+                            side: BorderSide(color: Colors.white.withOpacity(0.2)),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
@@ -472,7 +463,8 @@ class _LoginPageState extends State<LoginPage>
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: BorderSide(color: const Color(0xFF7C3AED).withOpacity(0.2)),
+        borderSide:
+            BorderSide(color: const Color(0xFF7C3AED).withOpacity(0.2)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
@@ -493,8 +485,4 @@ class _LoginPageState extends State<LoginPage>
       errorStyle: const TextStyle(color: Color(0xFFDC2626), fontSize: 12),
     );
   }
-}
-
-extension on bool {
-  Object? operator [](String other) {}
 }

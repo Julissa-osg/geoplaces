@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../services/api_service.dart';
 import 'home_page.dart';
 
@@ -67,6 +68,17 @@ class _RegisterPageState extends State<RegisterPage>
     if (mounted) setState(() => loading = false);
 
     if (result['ok'] == true && mounted) {
+      // Registrar también en Firebase Auth
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passController.text,
+        );
+        print('FIREBASE AUTH: usuario registrado correctamente');
+      } catch (e) {
+        print('FIREBASE AUTH ERROR: $e');
+      }
+
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
