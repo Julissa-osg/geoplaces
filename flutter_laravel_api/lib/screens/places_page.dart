@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -57,7 +56,6 @@ class _PlacesPageState extends State<PlacesPage> {
   Future<void> _eliminarPlace(Place place) async {
     final ok = await PlaceService.deletePlace(place.id);
     if (ok) {
-      // Eliminar también de Firestore
       await FirestoreService.deletePlace(place.id);
       setState(() => places.removeWhere((p) => p.id == place.id));
       await NotificationService.mostrarLugarEliminado(place.name);
@@ -72,90 +70,13 @@ class _PlacesPageState extends State<PlacesPage> {
     }
   }
 
-  // ── Selector de imagen (cámara o galería) ────────────
-  Future<File?> _seleccionarImagen() async {
-    final picker = ImagePicker();
-    File? imageFile;
-
-    await showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF1E1E2E),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.white24,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Seleccionar imagen',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: _OpcionImagen(
-                    icon: Icons.camera_alt_rounded,
-                    label: 'Cámara',
-                    color: const Color(0xFF7C3AED),
-                    onTap: () async {
-                      Navigator.pop(ctx);
-                      final picked = await picker.pickImage(
-                        source: ImageSource.camera,
-                        imageQuality: 80,
-                      );
-                      if (picked != null) imageFile = File(picked.path);
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _OpcionImagen(
-                    icon: Icons.photo_library_rounded,
-                    label: 'Galería',
-                    color: const Color(0xFF10B981),
-                    onTap: () async {
-                      Navigator.pop(ctx);
-                      final picked = await picker.pickImage(
-                        source: ImageSource.gallery,
-                        imageQuality: 80,
-                      );
-                      if (picked != null) imageFile = File(picked.path);
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-          ],
-        ),
-      ),
-    );
-
-    return imageFile;
-  }
-
   Future<void> _mostrarFormulario({Position? posActual}) async {
     final nameController = TextEditingController();
     final descController = TextEditingController();
     double? lat = posActual?.latitude;
     double? lng = posActual?.longitude;
     File? imagenSeleccionada;
+    final picker = ImagePicker();
 
     await showModalBottomSheet(
       context: context,
@@ -165,209 +86,285 @@ class _PlacesPageState extends State<PlacesPage> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setModalState) => Padding(
-          padding: EdgeInsets.only(
-            left: 24,
-            right: 24,
-            top: 24,
-            bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: Colors.white24,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Guardar nuevo lugar',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 12),
+        builder: (ctx, setModalState) {
+          // ── Selector de imagen CORREGIDO ──
+          Future<void> seleccionarImagen() async {
+            ImageSource? source;
 
-                // Coordenadas
-                if (lat != null && lng != null)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF7C3AED).withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                          color: const Color(0xFF7C3AED).withOpacity(0.4)),
+            // Usamos context del Scaffold (no ctx) para evitar
+            // que Flutter cierre ambos sheets al mismo tiempo
+            await showModalBottomSheet(
+              context: context,
+              backgroundColor: const Color(0xFF1E1E2E),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              builder: (innerCtx) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
-                    child: Row(
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Seleccionar imagen',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
                       children: [
-                        const Icon(Icons.location_on,
-                            color: Color(0xFF7C3AED), size: 16),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${lat.toStringAsFixed(6)}, ${lng.toStringAsFixed(6)}',
-                          style: const TextStyle(
-                              color: Colors.white70, fontSize: 12),
+                        Expanded(
+                          child: _OpcionImagen(
+                            icon: Icons.camera_alt_rounded,
+                            label: 'Cámara',
+                            color: const Color(0xFF7C3AED),
+                            onTap: () {
+                              source = ImageSource.camera; // solo guarda la fuente
+                              Navigator.pop(innerCtx);     // cierra solo este sheet
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: _OpcionImagen(
+                            icon: Icons.photo_library_rounded,
+                            label: 'Galería',
+                            color: const Color(0xFF10B981),
+                            onTap: () {
+                              source = ImageSource.gallery; // solo guarda la fuente
+                              Navigator.pop(innerCtx);      // cierra solo este sheet
+                            },
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                const SizedBox(height: 14),
-
-                // Selector de imagen
-                GestureDetector(
-                  onTap: () async {
-                    final f = await _seleccionarImagen();
-                    if (f != null) {
-                      setModalState(() => imagenSeleccionada = f);
-                    }
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2A2A3E),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: imagenSeleccionada != null
-                            ? const Color(0xFF7C3AED)
-                            : Colors.white.withOpacity(0.1),
-                        width: imagenSeleccionada != null ? 2 : 1,
-                      ),
-                    ),
-                    child: imagenSeleccionada != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(11),
-                            child: Image.file(
-                              imagenSeleccionada!,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_a_photo_rounded,
-                                color: Colors.white.withOpacity(0.4),
-                                size: 32,
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Toca para agregar foto',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.4),
-                                  fontSize: 13,
-                                ),
-                              ),
-                              Text(
-                                'Cámara o galería',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.25),
-                                  fontSize: 11,
-                                ),
-                              ),
-                            ],
-                          ),
-                  ),
+                    const SizedBox(height: 12),
+                  ],
                 ),
-                const SizedBox(height: 14),
+              ),
+            );
 
-                // Nombre
-                TextField(
-                  controller: nameController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    labelText: 'Nombre del lugar',
-                    labelStyle: const TextStyle(color: Colors.white60),
-                    filled: true,
-                    fillColor: const Color(0xFF2A2A3E),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon:
-                        const Icon(Icons.place, color: Color(0xFF7C3AED)),
-                  ),
-                ),
-                const SizedBox(height: 12),
+            // El sheet ya cerró completamente antes de llegar aquí
+            if (source == null) return;
 
-                // Descripción
-                TextField(
-                  controller: descController,
-                  style: const TextStyle(color: Colors.white),
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                    labelText: 'Descripción (opcional)',
-                    labelStyle: const TextStyle(color: Colors.white60),
-                    filled: true,
-                    fillColor: const Color(0xFF2A2A3E),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: const Icon(Icons.description,
-                        color: Color(0xFF7C3AED)),
-                  ),
-                ),
-                const SizedBox(height: 20),
+            final picked = await picker.pickImage(
+              source: source!,
+              imageQuality: 80,
+            );
 
-                // Botón guardar
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      if (nameController.text.trim().isEmpty) return;
-                      if (lat == null || lng == null) return;
-                      final nuevo = await PlaceService.createPlace(
-                        name: nameController.text.trim(),
-                        description: descController.text.trim(),
-                        latitude: lat!,
-                        longitude: lng!,
-                        imageFile: imagenSeleccionada,
-                      );
-                      if (nuevo != null && ctx.mounted) {
-                        // Guardar también en Firestore
-                        await FirestoreService.savePlace(
-                          id: nuevo.id,
-                          name: nuevo.name,
-                          description: nuevo.description,
-                          latitude: nuevo.latitude,
-                          longitude: nuevo.longitude,
-                          imageUrl: nuevo.imageUrl,
-                          userId: nuevo.userId,
-                        );
-                        Navigator.pop(ctx);
-                        await NotificationService.mostrarLugarGuardado(
-                            nuevo.name);
-                        await _cargarPlaces();
-                      }
-                    },
-                    icon: const Icon(Icons.save),
-                    label: const Text('Guardar lugar'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF7C3AED),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            if (picked != null) {
+              print('IMAGEN SELECCIONADA: ${picked.path}');
+              setModalState(() => imagenSeleccionada = File(picked.path));
+            }
+          }
+
+          return Padding(
+            padding: EdgeInsets.only(
+              left: 24,
+              right: 24,
+              top: 24,
+              bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
             ),
-          ),
-        ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Guardar nuevo lugar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Coordenadas
+                  if (lat != null && lng != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF7C3AED).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                            color: const Color(0xFF7C3AED).withOpacity(0.4)),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.location_on,
+                              color: Color(0xFF7C3AED), size: 16),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${lat.toStringAsFixed(6)}, ${lng.toStringAsFixed(6)}',
+                            style: const TextStyle(
+                                color: Colors.white70, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                  const SizedBox(height: 14),
+
+                  // Selector de imagen
+                  GestureDetector(
+                    onTap: seleccionarImagen,
+                    child: Container(
+                      width: double.infinity,
+                      height: 130,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF2A2A3E),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: imagenSeleccionada != null
+                              ? const Color(0xFF7C3AED)
+                              : Colors.white.withOpacity(0.1),
+                          width: imagenSeleccionada != null ? 2 : 1,
+                        ),
+                      ),
+                      child: imagenSeleccionada != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(11),
+                              child: Image.file(
+                                imagenSeleccionada!,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_rounded,
+                                  color: Colors.white.withOpacity(0.4),
+                                  size: 32,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Toca para agregar foto',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.4),
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                Text(
+                                  'Cámara o galería',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.25),
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Nombre
+                  TextField(
+                    controller: nameController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Nombre del lugar',
+                      labelStyle: const TextStyle(color: Colors.white60),
+                      filled: true,
+                      fillColor: const Color(0xFF2A2A3E),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon:
+                          const Icon(Icons.place, color: Color(0xFF7C3AED)),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Descripción
+                  TextField(
+                    controller: descController,
+                    style: const TextStyle(color: Colors.white),
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                      labelText: 'Descripción (opcional)',
+                      labelStyle: const TextStyle(color: Colors.white60),
+                      filled: true,
+                      fillColor: const Color(0xFF2A2A3E),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: const Icon(Icons.description,
+                          color: Color(0xFF7C3AED)),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Botón guardar
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        if (nameController.text.trim().isEmpty) return;
+                        if (lat == null || lng == null) return;
+                        final nuevo = await PlaceService.createPlace(
+                          name: nameController.text.trim(),
+                          description: descController.text.trim(),
+                          latitude: lat!,
+                          longitude: lng!,
+                          imageFile: imagenSeleccionada,
+                        );
+                        if (nuevo != null && ctx.mounted) {
+                          await FirestoreService.savePlace(
+                            id: nuevo.id,
+                            name: nuevo.name,
+                            description: nuevo.description,
+                            latitude: nuevo.latitude,
+                            longitude: nuevo.longitude,
+                            imageUrl: nuevo.imageUrl,
+                            userId: nuevo.userId,
+                          );
+                          Navigator.pop(ctx);
+                          await NotificationService.mostrarLugarGuardado(nuevo.name);
+                          await _cargarPlaces();
+                        }
+                      },
+                      icon: const Icon(Icons.save),
+                      label: const Text('Guardar lugar'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF7C3AED),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
