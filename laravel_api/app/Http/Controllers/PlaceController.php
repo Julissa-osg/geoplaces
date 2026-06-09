@@ -4,22 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Place;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class PlaceController extends Controller
 {
+    // ── Sube imagen a ImgBB y devuelve la URL ──────────
+    private function subirImagenImgBB($archivo): ?string
+    {
+        $response = Http::post('https://api.imgbb.com/1/upload', [
+            'key'   => '02d4e6525eeb97542a9b5f9a5a4227e6',
+            'image' => base64_encode(file_get_contents($archivo->getRealPath())),
+            'name'  => $archivo->getClientOriginalName(),
+        ]);
+
+        if ($response->successful()) {
+            return $response->json('data.url'); // URL directa de la imagen
+        }
+
+        return null;
+    }
+
     // GET /api/places — listar los places del usuario autenticado
     public function index(Request $request)
     {
         $places = $request->user()->places()->latest()->get();
 
-        // Agregar URL completa de la imagen
-        $places->transform(function ($place) use ($request) {
-            if ($place->image) {
-                $place->image_url = $request->getSchemeAndHttpHost() . '/storage/' . $place->image;
-            } else {
-                $place->image_url = null;
-            }
+        $places->transform(function ($place) {
+            // image ahora guarda directamente la URL de ImgBB
+            $place->image_url = $place->image ?? null;
             return $place;
         });
 
@@ -37,19 +49,14 @@ class PlaceController extends Controller
             'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        // Manejar subida de imagen
+        // Subir imagen a ImgBB si existe
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('places', 'public');
+            $url = $this->subirImagenImgBB($request->file('image'));
+            $validated['image'] = $url; // guardamos la URL directa
         }
 
         $place = $request->user()->places()->create($validated);
-
-        // Agregar URL completa
-        if ($place->image) {
-            $place->image_url = $request->getSchemeAndHttpHost() . '/storage/' . $place->image;
-        } else {
-            $place->image_url = null;
-        }
+        $place->image_url = $place->image ?? null;
 
         return response()->json($place, 201);
     }
@@ -61,11 +68,7 @@ class PlaceController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        if ($place->image) {
-            $place->image_url = $request->getSchemeAndHttpHost() . '/storage/' . $place->image;
-        } else {
-            $place->image_url = null;
-        }
+        $place->image_url = $place->image ?? null;
 
         return response()->json($place);
     }
@@ -85,22 +88,16 @@ class PlaceController extends Controller
             'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
 
-        // Manejar subida de nueva imagen
+        // Subir nueva imagen a ImgBB si existe
         if ($request->hasFile('image')) {
-            // Eliminar imagen anterior si existe
-            if ($place->image) {
-                Storage::disk('public')->delete($place->image);
+            $url = $this->subirImagenImgBB($request->file('image'));
+            if ($url) {
+                $validated['image'] = $url;
             }
-            $validated['image'] = $request->file('image')->store('places', 'public');
         }
 
         $place->update($validated);
-
-        if ($place->image) {
-            $place->image_url = $request->getSchemeAndHttpHost() . '/storage/' . $place->image;
-        } else {
-            $place->image_url = null;
-        }
+        $place->image_url = $place->image ?? null;
 
         return response()->json($place, 200);
     }
@@ -112,11 +109,8 @@ class PlaceController extends Controller
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        // Eliminar imagen si existe
-        if ($place->image) {
-            Storage::disk('public')->delete($place->image);
-        }
-
+        // ImgBB no tiene API para eliminar en plan gratuito,
+        // solo eliminamos el registro de la base de datos
         $place->delete();
 
         return response()->json(['message' => 'Place deleted'], 200);

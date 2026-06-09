@@ -75,7 +75,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
     return '${km.toStringAsFixed(2)} km';
   }
 
-  // ── Integración con apps externas ──────────────────────
   Future<void> _abrirEnGoogleMaps() async {
     final uri = Uri.parse(
       'https://www.google.com/maps/search/?api=1&query=${_place.latitude},${_place.longitude}',
@@ -98,7 +97,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
   }
 
   Future<void> _llamar() async {
-    // Número de ejemplo - en una app real el usuario lo ingresaría
     final uri = Uri.parse('tel:+593000000000');
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
@@ -116,9 +114,9 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
     }
   }
 
+  // ── FUNCIÓN CORREGIDA ──────────────────────────────
   Future<File?> _seleccionarImagen() async {
-    final picker = ImagePicker();
-    File? imageFile;
+    ImageSource? source;
 
     await showModalBottomSheet(
       context: context,
@@ -132,14 +130,22 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 40, height: 4,
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
-                color: Colors.white24, borderRadius: BorderRadius.circular(2),
+                color: Colors.white24,
+                borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(height: 20),
-            const Text('Cambiar imagen',
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+            const Text(
+              'Cambiar imagen',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 20),
             Row(
               children: [
@@ -148,10 +154,9 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                     icon: Icons.camera_alt_rounded,
                     label: 'Cámara',
                     color: const Color(0xFF7C3AED),
-                    onTap: () async {
-                      Navigator.pop(ctx);
-                      final p = await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
-                      if (p != null) imageFile = File(p.path);
+                    onTap: () {
+                      source = ImageSource.camera; // solo guarda la fuente
+                      Navigator.pop(ctx);          // cierra solo este sheet
                     },
                   ),
                 ),
@@ -161,10 +166,9 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                     icon: Icons.photo_library_rounded,
                     label: 'Galería',
                     color: const Color(0xFF10B981),
-                    onTap: () async {
-                      Navigator.pop(ctx);
-                      final p = await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
-                      if (p != null) imageFile = File(p.path);
+                    onTap: () {
+                      source = ImageSource.gallery; // solo guarda la fuente
+                      Navigator.pop(ctx);           // cierra solo este sheet
                     },
                   ),
                 ),
@@ -175,7 +179,14 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
         ),
       ),
     );
-    return imageFile;
+
+    // El sheet ya cerró completamente antes de llegar aquí
+    if (source == null) return null;
+
+    final picker = ImagePicker();
+    final p = await picker.pickImage(source: source!, imageQuality: 80);
+    if (p != null) return File(p.path);
+    return null;
   }
 
   void _mostrarSnack(String msg, bool ok) {
@@ -208,7 +219,9 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setModal) => Padding(
           padding: EdgeInsets.only(
-            left: 24, right: 24, top: 24,
+            left: 24,
+            right: 24,
+            top: 24,
             bottom: MediaQuery.of(ctx).viewInsets.bottom + 24,
           ),
           child: SingleChildScrollView(
@@ -218,16 +231,21 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
               children: [
                 Center(
                   child: Container(
-                    width: 40, height: 4,
+                    width: 40,
+                    height: 4,
                     decoration: BoxDecoration(
                         color: Colors.white24,
                         borderRadius: BorderRadius.circular(2)),
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text('Editar lugar',
-                    style: TextStyle(
-                        color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                const Text(
+                  'Editar lugar',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(height: 16),
 
                 // Preview de imagen actual / nueva
@@ -251,32 +269,43 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                     child: nuevaImagen != null
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(11),
-                            child: Image.file(nuevaImagen!, fit: BoxFit.cover))
+                            child: Image.file(nuevaImagen!, fit: BoxFit.cover),
+                          )
                         : _place.imageUrl != null
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(11),
                                 child: Stack(
                                   fit: StackFit.expand,
                                   children: [
-                                    Image.network(_place.imageUrl!, fit: BoxFit.cover),
+                                    Image.network(
+                                      _place.imageUrl!,
+                                      fit: BoxFit.cover,
+                                    ),
                                     Container(
                                       color: Colors.black45,
                                       child: const Center(
-                                        child: Text('Toca para cambiar',
-                                            style: TextStyle(color: Colors.white70)),
+                                        child: Text(
+                                          'Toca para cambiar',
+                                          style: TextStyle(color: Colors.white70),
+                                        ),
                                       ),
                                     ),
                                   ],
-                                ))
+                                ),
+                              )
                             : Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.add_a_photo_rounded,
-                                      color: Colors.white.withOpacity(0.4), size: 28),
+                                      color: Colors.white.withOpacity(0.4),
+                                      size: 28),
                                   const SizedBox(height: 6),
-                                  Text('Agregar foto',
-                                      style: TextStyle(
-                                          color: Colors.white.withOpacity(0.4), fontSize: 13)),
+                                  Text(
+                                    'Agregar foto',
+                                    style: TextStyle(
+                                        color: Colors.white.withOpacity(0.4),
+                                        fontSize: 13),
+                                  ),
                                 ],
                               ),
                   ),
@@ -365,7 +394,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
       backgroundColor: const Color(0xFF12121E),
       body: CustomScrollView(
         slivers: [
-          // ── AppBar con mapa ──────────────────────────────
           SliverAppBar(
             expandedHeight: 280,
             pinned: true,
@@ -407,25 +435,30 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                   ),
                   children: [
                     TileLayer(
-                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       userAgentPackageName: 'com.flutter.laravel',
                     ),
                     if (_miPos != null)
                       MarkerLayer(markers: [
                         Marker(
                           point: LatLng(_miPos!.latitude, _miPos!.longitude),
-                          width: 40, height: 40,
+                          width: 40,
+                          height: 40,
                           child: Container(
                             decoration: BoxDecoration(
                               color: const Color(0xFF3B82F6).withOpacity(0.25),
                               shape: BoxShape.circle,
-                              border: Border.all(color: const Color(0xFF3B82F6), width: 2),
+                              border: Border.all(
+                                  color: const Color(0xFF3B82F6), width: 2),
                             ),
                             child: Center(
                               child: Container(
-                                width: 12, height: 12,
+                                width: 12,
+                                height: 12,
                                 decoration: const BoxDecoration(
-                                  color: Color(0xFF3B82F6), shape: BoxShape.circle),
+                                    color: Color(0xFF3B82F6),
+                                    shape: BoxShape.circle),
                               ),
                             ),
                           ),
@@ -434,7 +467,8 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                     MarkerLayer(markers: [
                       Marker(
                         point: placeLatLng,
-                        width: 48, height: 48,
+                        width: 48,
+                        height: 48,
                         child: const Icon(Icons.location_on,
                             color: Color(0xFF7C3AED), size: 48),
                       ),
@@ -465,7 +499,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ── Imagen del lugar ───────────────────
                   if (_place.imageUrl != null) ...[
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
@@ -490,7 +523,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                     const SizedBox(height: 20),
                   ],
 
-                  // ── Nombre y descripción ───────────────
                   Text(
                     _place.name,
                     style: const TextStyle(
@@ -512,7 +544,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                   ],
                   const SizedBox(height: 24),
 
-                  // ── Info Cards ─────────────────────────
                   Row(
                     children: [
                       Expanded(
@@ -562,7 +593,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                   ),
                   const SizedBox(height: 24),
 
-                  // ── Coordenadas completas ──────────────
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
@@ -595,7 +625,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                   ),
                   const SizedBox(height: 24),
 
-                  // ── Acciones externas ──────────────────
                   const Text(
                     'Acciones',
                     style: TextStyle(
@@ -606,7 +635,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                   ),
                   const SizedBox(height: 12),
 
-                  // Google Maps
                   _AccionBtn(
                     icon: Icons.map_rounded,
                     label: 'Abrir en Google Maps',
@@ -615,7 +643,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                   ),
                   const SizedBox(height: 10),
 
-                  // WhatsApp
                   _AccionBtn(
                     icon: Icons.chat_rounded,
                     label: 'Compartir por WhatsApp',
@@ -647,7 +674,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                   ),
                   const SizedBox(height: 10),
 
-                  // Brújula
                   _AccionBtn(
                     icon: Icons.explore_rounded,
                     label: 'Abrir brújula → este lugar',
@@ -661,7 +687,6 @@ class _DetallePlacePageState extends State<DetallePlacePage> {
                   ),
                   const SizedBox(height: 10),
 
-                  // Editar
                   OutlinedButton.icon(
                     onPressed: _mostrarModalEdicion,
                     icon: const Icon(Icons.edit_outlined),
@@ -693,11 +718,12 @@ class _BtnFuente extends StatelessWidget {
   final String label;
   final Color color;
   final VoidCallback onTap;
-  const _BtnFuente(
-      {required this.icon,
-      required this.label,
-      required this.color,
-      required this.onTap});
+  const _BtnFuente({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -713,11 +739,14 @@ class _BtnFuente extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 30),
             const SizedBox(height: 8),
-            Text(label,
-                style: TextStyle(
-                    color: color,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14)),
+            Text(
+              label,
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+            ),
           ],
         ),
       ),
@@ -731,11 +760,12 @@ class _AccionBtn extends StatelessWidget {
   final String label;
   final Color color;
   final VoidCallback onTap;
-  const _AccionBtn(
-      {required this.icon,
-      required this.label,
-      required this.color,
-      required this.onTap});
+  const _AccionBtn({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -783,11 +813,12 @@ class _InfoCard extends StatelessWidget {
   final String label;
   final String value;
   final Color color;
-  const _InfoCard(
-      {required this.icon,
-      required this.label,
-      required this.value,
-      required this.color});
+  const _InfoCard({
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.color,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -802,18 +833,22 @@ class _InfoCard extends StatelessWidget {
         children: [
           Icon(icon, color: color, size: 20),
           const SizedBox(height: 8),
-          Text(label,
-              style: TextStyle(
-                  color: Colors.white.withOpacity(0.5),
-                  fontSize: 11,
-                  letterSpacing: 0.5)),
+          Text(
+            label,
+            style: TextStyle(
+                color: Colors.white.withOpacity(0.5),
+                fontSize: 11,
+                letterSpacing: 0.5),
+          ),
           const SizedBox(height: 2),
-          Text(value,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
-              overflow: TextOverflow.ellipsis),
+          Text(
+            value,
+            style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );
