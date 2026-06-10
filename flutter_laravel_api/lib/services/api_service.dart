@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,6 @@ class ApiService {
     scopes: ['email', 'profile'],
   );
 
-  // Headers base para JSON
   static Map<String, String> get _jsonHeaders => {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ class ApiService {
         final data = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['token']);
-        await prefs.setString('user_name', data['user']?['name'] ?? ''); // ✅ guarda nombre
+        await prefs.setString('user_name', data['user']?['name'] ?? '');
         return {'ok': true};
       }
 
@@ -99,7 +99,7 @@ class ApiService {
         final data = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['token']);
-        await prefs.setString('user_name', data['user']?['name'] ?? ''); // ✅ guarda nombre
+        await prefs.setString('user_name', data['user']?['name'] ?? '');
         return {'ok': true};
       }
 
@@ -136,7 +136,20 @@ class ApiService {
         final data = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', data['token']);
-        await prefs.setString('user_name', data['user']?['name'] ?? ''); // ✅ guarda nombre
+        await prefs.setString('user_name', data['user']?['name'] ?? '');
+
+        // ✅ Registrar sesión en Firebase
+        try {
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          print('FIREBASE GOOGLE: sesión registrada correctamente');
+        } catch (e) {
+          print('FIREBASE GOOGLE ERROR: $e');
+        }
+
         return true;
       }
       return false;
@@ -157,13 +170,11 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        // ✅ actualiza el nombre guardado localmente
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('user_name', data['name'] ?? '');
         return data;
       }
 
-      // Fallback: usar nombre guardado localmente
       final prefs = await SharedPreferences.getInstance();
       final name = prefs.getString('user_name') ?? '';
       if (name.isNotEmpty) return {'name': name};
@@ -171,7 +182,6 @@ class ApiService {
       return null;
     } catch (e) {
       print('GET USER ERROR: $e');
-      // Fallback offline
       final prefs = await SharedPreferences.getInstance();
       final name = prefs.getString('user_name') ?? '';
       return name.isNotEmpty ? {'name': name} : null;
@@ -187,12 +197,13 @@ class ApiService {
         headers: headers,
       );
       await _googleSignIn.signOut();
+      await FirebaseAuth.instance.signOut(); // ✅ cerrar sesión también en Firebase
     } catch (e) {
       print('LOGOUT ERROR: $e');
     } finally {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('token');
-      await prefs.remove('user_name'); // ✅ limpia nombre al cerrar sesión
+      await prefs.remove('user_name');
     }
   }
 }
