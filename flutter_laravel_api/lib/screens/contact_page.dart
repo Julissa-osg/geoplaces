@@ -79,7 +79,9 @@ class ContactPage extends StatelessWidget {
               subtitle: 'Escríbenos, respondemos rápido.',
               color: const Color(0xFF25D366),
               buttonText: 'Enviar mensaje',
-              onTap: () => _launchUrl('https://wa.me/51999999999'), // Cambia el número por el tuyo
+              onTap: () => _launchUrl(
+                'https://wa.me/51929304596?text=Hola,%20necesito%20ayuda%20con%20GeoPlaces',
+              ),
             ),
             const SizedBox(height: 16),
             _ContactCard(
@@ -88,7 +90,7 @@ class ContactPage extends StatelessWidget {
               subtitle: 'Disponible de 9:00 AM a 6:00 PM.',
               color: const Color(0xFF3B82F6),
               buttonText: 'Llamar ahora',
-              onTap: () => _launchUrl('tel:+51999999999'), // Cambia el número
+              onTap: () => _launchUrl('tel:+51917460818'),
             ),
             const SizedBox(height: 16),
             _ContactCard(
@@ -97,7 +99,9 @@ class ContactPage extends StatelessWidget {
               subtitle: 'Consultas generales y soporte técnico.',
               color: const Color(0xFFEC4899),
               buttonText: 'Redactar correo',
-              onTap: () => _launchUrl('mailto:soporte@geoplaces.com?subject=Ayuda%20GeoPlaces'), // Cambia el correo
+              onTap: () => _launchUrl(
+                'mailto:soporte@geoplaces.com?subject=Ayuda%20GeoPlaces',
+              ),
             ),
           ],
         ),
